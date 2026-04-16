@@ -33,6 +33,22 @@ import {
   VolleyballResultStoryPhoto,
   volleyballResultStoryPhotoSchema,
 } from "./volleyball/ResultStoryPhoto";
+import {
+  VolleyballResultPostSplit,
+  volleyballResultPostSplitSchema,
+} from "./volleyball/ResultPostSplit";
+import {
+  VolleyballResultStorySplit,
+  volleyballResultStorySplitSchema,
+} from "./volleyball/ResultStorySplit";
+import {
+  FootballResultPostSplit,
+  footballResultPostSplitSchema,
+} from "./football/ResultPostSplit";
+import {
+  FootballResultStorySplit,
+  footballResultStorySplitSchema,
+} from "./football/ResultStorySplit";
 
 export type TemplateDef<P = any> = {
   id: string;
@@ -110,6 +126,40 @@ const entries: TemplateDef[] = [
     sport: "volleyball",
     Component: VolleyballResultStoryPhoto as ComponentType,
     schema: volleyballResultStoryPhotoSchema,
+    defaultWidth: 1080,
+    defaultHeight: 1920,
+  },
+  // Football — photo split panel
+  {
+    id: "football/result-post-photo-split",
+    sport: "football",
+    Component: FootballResultPostSplit as ComponentType,
+    schema: footballResultPostSplitSchema,
+    defaultWidth: 1080,
+    defaultHeight: 1080,
+  },
+  {
+    id: "football/result-story-photo-split",
+    sport: "football",
+    Component: FootballResultStorySplit as ComponentType,
+    schema: footballResultStorySplitSchema,
+    defaultWidth: 1080,
+    defaultHeight: 1920,
+  },
+  // Volleyball — photo split panel
+  {
+    id: "volleyball/result-post-photo-split",
+    sport: "volleyball",
+    Component: VolleyballResultPostSplit as ComponentType,
+    schema: volleyballResultPostSplitSchema,
+    defaultWidth: 1080,
+    defaultHeight: 1080,
+  },
+  {
+    id: "volleyball/result-story-photo-split",
+    sport: "volleyball",
+    Component: VolleyballResultStorySplit as ComponentType,
+    schema: volleyballResultStorySplitSchema,
     defaultWidth: 1080,
     defaultHeight: 1920,
   },
