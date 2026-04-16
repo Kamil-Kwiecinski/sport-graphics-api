@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const html = renderTemplateToHtml(def.Component, dataValidated.data, {
+    const html = await renderTemplateToHtml(def.Component, dataValidated.data, {
       width,
       height,
     });

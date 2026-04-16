@@ -1,5 +1,3 @@
-import "server-only";
-import { renderToStaticMarkup } from "react-dom/server";
 import { createElement, type ComponentType } from "react";
 
 const FONT_LINKS = `<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,12 +11,16 @@ type Opts = {
   height: number;
 };
 
+// Dynamic import of react-dom/server — Next.js static analyzer blocks
+// top-level imports of react-dom/server in any module reachable from /app.
+// This runs ONLY inside POST /api/render (runtime: "nodejs"), so it's safe.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function renderTemplateToHtml<P extends Record<string, any>>(
+export async function renderTemplateToHtml<P extends Record<string, any>>(
   Component: ComponentType<P>,
   data: P,
   { width, height }: Opts,
-): string {
+): Promise<string> {
+  const { renderToStaticMarkup } = await import("react-dom/server");
   const body = renderToStaticMarkup(createElement(Component, data));
   return `<!DOCTYPE html>
 <html>
