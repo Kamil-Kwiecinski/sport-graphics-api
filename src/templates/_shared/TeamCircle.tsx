@@ -7,10 +7,25 @@ type Props = {
   light?: boolean;
 };
 
+/**
+ * Auto-scale fontSize dla długich nazw drużyn ("Old School Team",
+ * "RKS Garbarnia Kraków"). Parametr base to docelowy rozmiar dla
+ * krótkich nazw (≤14 znaków).
+ */
+function computeTeamFontSize(textLength: number, base: number): number {
+  if (textLength <= 14) return base;
+  if (textLength <= 18) return Math.round(base * 0.88);
+  if (textLength <= 22) return Math.round(base * 0.78);
+  if (textLength <= 28) return Math.round(base * 0.68);
+  return Math.round(base * 0.6);
+}
+
 export function TeamCircle({ team, size, fontSize, light = true }: Props) {
   const borderW = size > 150 ? 5 : 4;
   const hasLogo = team.logo_url && team.logo_url.length > 5;
   const initial = (team.name || "?").charAt(0).toUpperCase();
+
+  const effectiveFontSize = computeTeamFontSize(team.name.length, fontSize);
 
   return (
     <div
@@ -62,18 +77,15 @@ export function TeamCircle({ team, size, fontSize, light = true }: Props) {
         style={{
           background: team.primary_color,
           color: "#0d1117",
-          fontSize,
+          fontSize: effectiveFontSize,
           fontWeight: 700,
           fontFamily: "Oswald, sans-serif",
-          padding: `${Math.round(fontSize * 0.25)}px ${Math.round(fontSize * 0.8)}px`,
-          borderRadius: Math.round(fontSize * 0.5),
+          padding: `${Math.round(effectiveFontSize * 0.25)}px ${Math.round(effectiveFontSize * 0.8)}px`,
+          borderRadius: Math.round(effectiveFontSize * 0.5),
           marginTop: Math.round(fontSize * 0.5),
           display: "inline-block",
           textTransform: "uppercase",
           whiteSpace: "nowrap",
-          maxWidth: size + 80,
-          overflow: "hidden",
-          textOverflow: "ellipsis",
         }}
       >
         {team.name}
