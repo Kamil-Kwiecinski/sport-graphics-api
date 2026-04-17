@@ -50,6 +50,16 @@ import {
   footballResultStorySplitSchema,
 } from "./football/ResultStorySplit";
 
+// MVP templates (no-photo + photo, per sport × post/story)
+import { VolleyballMvpPost, volleyballMvpPostSchema } from "./volleyball/MvpPost";
+import { VolleyballMvpStory, volleyballMvpStorySchema } from "./volleyball/MvpStory";
+import { VolleyballMvpPostPhoto, volleyballMvpPostPhotoSchema } from "./volleyball/MvpPostPhoto";
+import { VolleyballMvpStoryPhoto, volleyballMvpStoryPhotoSchema } from "./volleyball/MvpStoryPhoto";
+import { FootballMvpPost, footballMvpPostSchema } from "./football/MvpPost";
+import { FootballMvpStory, footballMvpStorySchema } from "./football/MvpStory";
+import { FootballMvpPostPhoto, footballMvpPostPhotoSchema } from "./football/MvpPostPhoto";
+import { FootballMvpStoryPhoto, footballMvpStoryPhotoSchema } from "./football/MvpStoryPhoto";
+
 export type TemplateDef<P = any> = {
   id: string;
   sport: "volleyball" | "football" | "basketball" | "hockey";
@@ -160,6 +170,72 @@ const entries: TemplateDef[] = [
     sport: "volleyball",
     Component: VolleyballResultStorySplit as ComponentType,
     schema: volleyballResultStorySplitSchema,
+    defaultWidth: 1080,
+    defaultHeight: 1920,
+  },
+
+  // ── MVP templates ─────────────────────────────────────────────
+  {
+    id: "volleyball/mvp-post",
+    sport: "volleyball",
+    Component: VolleyballMvpPost as ComponentType,
+    schema: volleyballMvpPostSchema,
+    defaultWidth: 1080,
+    defaultHeight: 1080,
+  },
+  {
+    id: "volleyball/mvp-story",
+    sport: "volleyball",
+    Component: VolleyballMvpStory as ComponentType,
+    schema: volleyballMvpStorySchema,
+    defaultWidth: 1080,
+    defaultHeight: 1920,
+  },
+  {
+    id: "volleyball/mvp-post-photo",
+    sport: "volleyball",
+    Component: VolleyballMvpPostPhoto as ComponentType,
+    schema: volleyballMvpPostPhotoSchema,
+    defaultWidth: 1080,
+    defaultHeight: 1080,
+  },
+  {
+    id: "volleyball/mvp-story-photo",
+    sport: "volleyball",
+    Component: VolleyballMvpStoryPhoto as ComponentType,
+    schema: volleyballMvpStoryPhotoSchema,
+    defaultWidth: 1080,
+    defaultHeight: 1920,
+  },
+  {
+    id: "football/mvp-post",
+    sport: "football",
+    Component: FootballMvpPost as ComponentType,
+    schema: footballMvpPostSchema,
+    defaultWidth: 1080,
+    defaultHeight: 1080,
+  },
+  {
+    id: "football/mvp-story",
+    sport: "football",
+    Component: FootballMvpStory as ComponentType,
+    schema: footballMvpStorySchema,
+    defaultWidth: 1080,
+    defaultHeight: 1920,
+  },
+  {
+    id: "football/mvp-post-photo",
+    sport: "football",
+    Component: FootballMvpPostPhoto as ComponentType,
+    schema: footballMvpPostPhotoSchema,
+    defaultWidth: 1080,
+    defaultHeight: 1080,
+  },
+  {
+    id: "football/mvp-story-photo",
+    sport: "football",
+    Component: FootballMvpStoryPhoto as ComponentType,
+    schema: footballMvpStoryPhotoSchema,
     defaultWidth: 1080,
     defaultHeight: 1920,
   },
