@@ -11,6 +11,11 @@ import {
 export const MatchMetaSchema = z.object({
   kolejka: z.string().default(""),
   grupa: z.string().optional().default(""),
+  // Opcjonalne uniwersalne pola (wzór "jak sponsorzy"):
+  // obecne → render w header/chip, puste → slot ukryty
+  kategoria_wiekowa: z.string().optional().default(""),
+  faza_rozgrywek: z.string().optional().default(""),
+  mvp: z.string().optional().default(""),
   liga: LigaInfoSchema.default({}),
   sponsorzy: z.array(z.string().url().or(z.string().min(5))).default([]),
   team_home: TeamSchema,

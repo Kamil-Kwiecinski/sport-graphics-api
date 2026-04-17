@@ -1,5 +1,8 @@
 import { VolleyballMatchPhotoSchema } from "@/types/match";
 import { SponsorBar } from "../_shared/SponsorBar";
+import { HeaderStrip } from "../_shared/HeaderStrip";
+import { MvpChip } from "../_shared/MvpChip";
+import { HashtagLine } from "../_shared/HashtagLine";
 import type { z } from "zod";
 
 export const volleyballResultStorySplitSchema = VolleyballMatchPhotoSchema;
@@ -20,6 +23,9 @@ export function VolleyballResultStorySplit(
     team_away,
     score,
     kolejka,
+    kategoria_wiekowa,
+    faza_rozgrywek,
+    mvp,
     liga,
     sponsorzy,
     photo_base64,
@@ -146,18 +152,9 @@ export function VolleyballResultStorySplit(
             </span>
           )}
         </div>
-        <span
-          style={{
-            color: "rgba(255,255,255,0.6)",
-            fontFamily: "Oswald, sans-serif",
-            fontSize: 22,
-            fontWeight: 600,
-            textTransform: "uppercase",
-            letterSpacing: 3,
-          }}
-        >
-          {kolejka}
-        </span>
+        <HeaderStrip
+          segments={[kolejka, kategoria_wiekowa, faza_rozgrywek]}
+        />
       </div>
 
       {/* Bottom panel: teams + score + sets */}
@@ -255,8 +252,11 @@ export function VolleyballResultStorySplit(
             })}
           </div>
         )}
+
+        <MvpChip mvp={mvp} />
       </div>
 
+      <HashtagLine hashtag={liga.hashtag} offsetBottom={sponsorBarH} />
       <SponsorBar urls={sponsorzy} height={sponsorBarH} />
     </div>
   );

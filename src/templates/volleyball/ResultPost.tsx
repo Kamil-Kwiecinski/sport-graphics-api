@@ -2,13 +2,26 @@ import { VolleyballMatchSchema } from "@/types/match";
 import { LigaLogo } from "../_shared/LigaLogo";
 import { TeamCircle } from "../_shared/TeamCircle";
 import { SponsorBar } from "../_shared/SponsorBar";
+import { HeaderStrip } from "../_shared/HeaderStrip";
+import { MvpChip } from "../_shared/MvpChip";
+import { HashtagLine } from "../_shared/HashtagLine";
 import type { z } from "zod";
 
 export const volleyballResultPostSchema = VolleyballMatchSchema;
 export type VolleyballResultPostProps = z.infer<typeof volleyballResultPostSchema>;
 
 export function VolleyballResultPost(props: VolleyballResultPostProps) {
-  const { team_home, team_away, score, kolejka, liga, sponsorzy } = props;
+  const {
+    team_home,
+    team_away,
+    score,
+    kolejka,
+    kategoria_wiekowa,
+    faza_rozgrywek,
+    mvp,
+    liga,
+    sponsorzy,
+  } = props;
   const sponsorBarH = sponsorzy.length > 0 ? 80 : 0;
 
   const cHome = team_home.primary_color;
@@ -61,28 +74,9 @@ export function VolleyballResultPost(props: VolleyballResultPostProps) {
       >
         <LigaLogo liga={liga} size={90} />
 
-        {kolejka ? (
-          <div
-            style={{
-              background: "rgba(0,74,173,0.5)",
-              padding: "6px 28px",
-              borderRadius: 20,
-            }}
-          >
-            <span
-              style={{
-                color: "rgba(255,255,255,0.8)",
-                fontFamily: "Oswald, sans-serif",
-                fontSize: 22,
-                fontWeight: 600,
-                letterSpacing: 2,
-                textTransform: "uppercase",
-              }}
-            >
-              {kolejka}
-            </span>
-          </div>
-        ) : null}
+        <HeaderStrip
+          segments={[kolejka, kategoria_wiekowa, faza_rozgrywek]}
+        />
 
         <div
           style={{
@@ -116,8 +110,11 @@ export function VolleyballResultPost(props: VolleyballResultPostProps) {
             cAway={cAway}
           />
         ) : null}
+
+        <MvpChip mvp={mvp} />
       </div>
 
+      <HashtagLine hashtag={liga.hashtag} offsetBottom={sponsorBarH} />
       <SponsorBar urls={sponsorzy} height={sponsorBarH} />
     </div>
   );

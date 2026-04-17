@@ -3,15 +3,28 @@ import { LigaLogo } from "../_shared/LigaLogo";
 import { TeamCircle } from "../_shared/TeamCircle";
 import { SponsorBar } from "../_shared/SponsorBar";
 import { ScorersList } from "../_shared/ScorersList";
+import { HeaderStrip } from "../_shared/HeaderStrip";
+import { MvpChip } from "../_shared/MvpChip";
+import { HashtagLine } from "../_shared/HashtagLine";
 import type { z } from "zod";
 
 export const footballResultStorySchema = FootballMatchSchema;
 export type FootballResultStoryProps = z.infer<typeof footballResultStorySchema>;
 
 export function FootballResultStory(props: FootballResultStoryProps) {
-  const { team_home, team_away, score, kolejka, grupa, liga, sponsorzy } = props;
+  const {
+    team_home,
+    team_away,
+    score,
+    kolejka,
+    grupa,
+    kategoria_wiekowa,
+    faza_rozgrywek,
+    mvp,
+    liga,
+    sponsorzy,
+  } = props;
   const sponsorBarH = sponsorzy.length > 0 ? 100 : 0;
-  const grupaKolejka = [grupa, kolejka].filter(Boolean).join(" · ");
 
   const cHome = team_home.primary_color;
   const cAway = team_away.primary_color;
@@ -70,28 +83,9 @@ export function FootballResultStory(props: FootballResultStoryProps) {
           }}
         >
           <LigaLogo liga={liga} size={120} />
-          {grupaKolejka ? (
-            <div
-              style={{
-                background: "rgba(0,74,173,0.5)",
-                padding: "8px 28px",
-                borderRadius: 20,
-              }}
-            >
-              <span
-                style={{
-                  color: "rgba(255,255,255,0.85)",
-                  fontFamily: "Oswald, sans-serif",
-                  fontSize: 28,
-                  fontWeight: 600,
-                  letterSpacing: 2,
-                  textTransform: "uppercase",
-                }}
-              >
-                {grupaKolejka}
-              </span>
-            </div>
-          ) : null}
+          <HeaderStrip
+            segments={[grupa, kolejka, kategoria_wiekowa, faza_rozgrywek]}
+          />
         </div>
 
         <TeamCircle team={team_home} size={200} fontSize={30} light />
@@ -136,8 +130,11 @@ export function FootballResultStory(props: FootballResultStoryProps) {
         />
 
         <TeamCircle team={team_away} size={200} fontSize={30} light />
+
+        <MvpChip mvp={mvp} />
       </div>
 
+      <HashtagLine hashtag={liga.hashtag} offsetBottom={sponsorBarH} />
       <SponsorBar urls={sponsorzy} height={sponsorBarH} />
     </div>
   );

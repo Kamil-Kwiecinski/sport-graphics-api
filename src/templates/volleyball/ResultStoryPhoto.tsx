@@ -3,6 +3,9 @@ import { LigaLogo } from "../_shared/LigaLogo";
 import { TeamCircle } from "../_shared/TeamCircle";
 import { SponsorBar } from "../_shared/SponsorBar";
 import { PhotoBackground } from "../_shared/PhotoBackground";
+import { HeaderStrip } from "../_shared/HeaderStrip";
+import { MvpChip } from "../_shared/MvpChip";
+import { HashtagLine } from "../_shared/HashtagLine";
 import type { z } from "zod";
 
 export const volleyballResultStoryPhotoSchema = VolleyballMatchPhotoSchema;
@@ -18,6 +21,9 @@ export function VolleyballResultStoryPhoto(
     team_away,
     score,
     kolejka,
+    kategoria_wiekowa,
+    faza_rozgrywek,
+    mvp,
     liga,
     sponsorzy,
     photo_base64,
@@ -72,33 +78,18 @@ export function VolleyballResultStoryPhoto(
           <LigaLogo liga={liga} size={100} />
         </div>
 
-        {kolejka ? (
-          <div
-            style={{
-              position: "absolute",
-              top: 210,
-              left: "50%",
-              transform: "translateX(-50%)",
-              background: "rgba(0,0,0,0.7)",
-              padding: "6px 24px",
-              borderRadius: 16,
-              whiteSpace: "nowrap",
-            }}
-          >
-            <span
-              style={{
-                color: "rgba(255,255,255,0.9)",
-                fontFamily: "Oswald, sans-serif",
-                fontSize: 26,
-                fontWeight: 700,
-                letterSpacing: 2,
-                textTransform: "uppercase",
-              }}
-            >
-              {kolejka}
-            </span>
-          </div>
-        ) : null}
+        <div
+          style={{
+            position: "absolute",
+            top: 210,
+            left: "50%",
+            transform: "translateX(-50%)",
+          }}
+        >
+          <HeaderStrip
+            segments={[kolejka, kategoria_wiekowa, faza_rozgrywek]}
+          />
+        </div>
 
         <div
           style={{
@@ -133,8 +124,13 @@ export function VolleyballResultStoryPhoto(
             cAway={team_away.primary_color}
           />
         ) : null}
+
+        <div style={{ marginTop: 18 }}>
+          <MvpChip mvp={mvp} />
+        </div>
       </div>
 
+      <HashtagLine hashtag={liga.hashtag} offsetBottom={sponsorBarH} />
       <SponsorBar urls={sponsorzy} height={sponsorBarH} />
     </div>
   );

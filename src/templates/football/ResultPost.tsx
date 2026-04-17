@@ -3,15 +3,28 @@ import { LigaLogo } from "../_shared/LigaLogo";
 import { TeamCircle } from "../_shared/TeamCircle";
 import { SponsorBar } from "../_shared/SponsorBar";
 import { ScorersList } from "../_shared/ScorersList";
+import { HeaderStrip } from "../_shared/HeaderStrip";
+import { MvpChip } from "../_shared/MvpChip";
+import { HashtagLine } from "../_shared/HashtagLine";
 import type { z } from "zod";
 
 export const footballResultPostSchema = FootballMatchSchema;
 export type FootballResultPostProps = z.infer<typeof footballResultPostSchema>;
 
 export function FootballResultPost(props: FootballResultPostProps) {
-  const { team_home, team_away, score, kolejka, grupa, liga, sponsorzy } = props;
+  const {
+    team_home,
+    team_away,
+    score,
+    kolejka,
+    grupa,
+    kategoria_wiekowa,
+    faza_rozgrywek,
+    mvp,
+    liga,
+    sponsorzy,
+  } = props;
   const sponsorBarH = sponsorzy.length > 0 ? 80 : 0;
-  const grupaKolejka = [grupa, kolejka].filter(Boolean).join(" · ");
   const hasScorers =
     score.scorers_home.length > 0 || score.scorers_away.length > 0;
 
@@ -67,28 +80,9 @@ export function FootballResultPost(props: FootballResultPostProps) {
       >
         <LigaLogo liga={liga} size={90} />
 
-        {grupaKolejka ? (
-          <div
-            style={{
-              background: "rgba(0, 74, 173, 0.5)",
-              padding: "6px 28px",
-              borderRadius: 20,
-            }}
-          >
-            <span
-              style={{
-                color: "rgba(255,255,255,0.8)",
-                fontFamily: "Oswald, sans-serif",
-                fontSize: 22,
-                fontWeight: 600,
-                letterSpacing: 2,
-                textTransform: "uppercase",
-              }}
-            >
-              {grupaKolejka}
-            </span>
-          </div>
-        ) : null}
+        <HeaderStrip
+          segments={[grupa, kolejka, kategoria_wiekowa, faza_rozgrywek]}
+        />
 
         <div
           style={{
@@ -151,8 +145,11 @@ export function FootballResultPost(props: FootballResultPostProps) {
             />
           </div>
         ) : null}
+
+        <MvpChip mvp={mvp} />
       </div>
 
+      <HashtagLine hashtag={liga.hashtag} offsetBottom={sponsorBarH} />
       <SponsorBar urls={sponsorzy} height={sponsorBarH} />
     </div>
   );

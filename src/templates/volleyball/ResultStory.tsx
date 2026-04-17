@@ -2,13 +2,26 @@ import { VolleyballMatchSchema } from "@/types/match";
 import { LigaLogo } from "../_shared/LigaLogo";
 import { TeamCircle } from "../_shared/TeamCircle";
 import { SponsorBar } from "../_shared/SponsorBar";
+import { HeaderStrip } from "../_shared/HeaderStrip";
+import { MvpChip } from "../_shared/MvpChip";
+import { HashtagLine } from "../_shared/HashtagLine";
 import type { z } from "zod";
 
 export const volleyballResultStorySchema = VolleyballMatchSchema;
 export type VolleyballResultStoryProps = z.infer<typeof volleyballResultStorySchema>;
 
 export function VolleyballResultStory(props: VolleyballResultStoryProps) {
-  const { team_home, team_away, score, kolejka, liga, sponsorzy } = props;
+  const {
+    team_home,
+    team_away,
+    score,
+    kolejka,
+    kategoria_wiekowa,
+    faza_rozgrywek,
+    mvp,
+    liga,
+    sponsorzy,
+  } = props;
   const sponsorBarH = sponsorzy.length > 0 ? 100 : 0;
 
   const cHome = team_home.primary_color;
@@ -68,28 +81,9 @@ export function VolleyballResultStory(props: VolleyballResultStoryProps) {
           }}
         >
           <LigaLogo liga={liga} size={120} />
-          {kolejka ? (
-            <div
-              style={{
-                background: "rgba(0,74,173,0.5)",
-                padding: "8px 28px",
-                borderRadius: 20,
-              }}
-            >
-              <span
-                style={{
-                  color: "rgba(255,255,255,0.85)",
-                  fontFamily: "Oswald, sans-serif",
-                  fontSize: 28,
-                  fontWeight: 600,
-                  letterSpacing: 2,
-                  textTransform: "uppercase",
-                }}
-              >
-                {kolejka}
-              </span>
-            </div>
-          ) : null}
+          <HeaderStrip
+            segments={[kolejka, kategoria_wiekowa, faza_rozgrywek]}
+          />
         </div>
 
         <TeamCircle team={team_home} size={200} fontSize={30} light />
@@ -122,8 +116,11 @@ export function VolleyballResultStory(props: VolleyballResultStoryProps) {
         />
 
         <TeamCircle team={team_away} size={200} fontSize={30} light />
+
+        <MvpChip mvp={mvp} />
       </div>
 
+      <HashtagLine hashtag={liga.hashtag} offsetBottom={sponsorBarH} />
       <SponsorBar urls={sponsorzy} height={sponsorBarH} />
     </div>
   );

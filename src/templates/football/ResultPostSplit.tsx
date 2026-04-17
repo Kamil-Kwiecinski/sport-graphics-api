@@ -1,5 +1,8 @@
 import { FootballMatchPhotoSchema } from "@/types/match";
 import { SponsorBar } from "../_shared/SponsorBar";
+import { HeaderStrip } from "../_shared/HeaderStrip";
+import { MvpChip } from "../_shared/MvpChip";
+import { HashtagLine } from "../_shared/HashtagLine";
 import type { z } from "zod";
 
 export const footballResultPostSplitSchema = FootballMatchPhotoSchema;
@@ -19,6 +22,9 @@ export function FootballResultPostSplit(props: FootballResultPostSplitProps) {
     score,
     kolejka,
     grupa,
+    kategoria_wiekowa,
+    faza_rozgrywek,
+    mvp,
     liga,
     sponsorzy,
     photo_base64,
@@ -31,7 +37,6 @@ export function FootballResultPostSplit(props: FootballResultPostSplitProps) {
   const cHome = team_home.primary_color;
   const cAway = team_away.primary_color;
   const cLiga = liga.primary_color;
-  const grupaKolejka = [grupa, kolejka].filter(Boolean).join(" · ");
   const teamLogoSize = 52;
   const hasScorers =
     score.scorers_home.length > 0 || score.scorers_away.length > 0;
@@ -202,18 +207,12 @@ export function FootballResultPostSplit(props: FootballResultPostSplitProps) {
                 </span>
               )}
             </div>
-            <span
-              style={{
-                color: "rgba(255,255,255,0.45)",
-                fontFamily: "Oswald, sans-serif",
-                fontSize: 14,
-                fontWeight: 500,
-                textTransform: "uppercase",
-                letterSpacing: 3,
-              }}
-            >
-              {grupaKolejka}
-            </span>
+            <div style={{ flex: 1 }}>
+              <HeaderStrip
+                segments={[grupa, kolejka, kategoria_wiekowa, faza_rozgrywek]}
+                size="small"
+              />
+            </div>
           </div>
           <div
             style={{
@@ -291,6 +290,9 @@ export function FootballResultPostSplit(props: FootballResultPostSplitProps) {
           >
             Do przerwy {score.half_home}:{score.half_away}
           </div>
+          <div style={{ marginTop: 10 }}>
+            <MvpChip mvp={mvp} size="small" />
+          </div>
         </div>
 
         {/* Bottom: scorers */}
@@ -347,6 +349,7 @@ export function FootballResultPostSplit(props: FootballResultPostSplitProps) {
         )}
       </div>
 
+      <HashtagLine hashtag={liga.hashtag} offsetBottom={sponsorBarH} />
       <SponsorBar urls={sponsorzy} height={sponsorBarH} />
     </div>
   );

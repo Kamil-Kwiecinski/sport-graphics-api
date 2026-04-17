@@ -4,6 +4,9 @@ import { TeamCircle } from "../_shared/TeamCircle";
 import { SponsorBar } from "../_shared/SponsorBar";
 import { ScorersList } from "../_shared/ScorersList";
 import { PhotoBackground } from "../_shared/PhotoBackground";
+import { HeaderStrip } from "../_shared/HeaderStrip";
+import { MvpChip } from "../_shared/MvpChip";
+import { HashtagLine } from "../_shared/HashtagLine";
 import type { z } from "zod";
 
 export const footballResultStoryPhotoSchema = FootballMatchPhotoSchema;
@@ -18,6 +21,9 @@ export function FootballResultStoryPhoto(props: FootballResultStoryPhotoProps) {
     score,
     kolejka,
     grupa,
+    kategoria_wiekowa,
+    faza_rozgrywek,
+    mvp,
     liga,
     sponsorzy,
     photo_base64,
@@ -26,7 +32,6 @@ export function FootballResultStoryPhoto(props: FootballResultStoryPhotoProps) {
   } = props;
 
   const sponsorBarH = sponsorzy.length > 0 ? 100 : 0;
-  const grupaKolejka = [grupa, kolejka].filter(Boolean).join(" · ");
   const hasScorers =
     score.scorers_home.length > 0 || score.scorers_away.length > 0;
 
@@ -74,33 +79,18 @@ export function FootballResultStoryPhoto(props: FootballResultStoryPhotoProps) {
           <LigaLogo liga={liga} size={100} />
         </div>
 
-        {grupaKolejka ? (
-          <div
-            style={{
-              position: "absolute",
-              top: 210,
-              left: "50%",
-              transform: "translateX(-50%)",
-              background: "rgba(0,0,0,0.7)",
-              padding: "6px 24px",
-              borderRadius: 16,
-              whiteSpace: "nowrap",
-            }}
-          >
-            <span
-              style={{
-                color: "rgba(255,255,255,0.9)",
-                fontFamily: "Oswald, sans-serif",
-                fontSize: 26,
-                fontWeight: 700,
-                letterSpacing: 2,
-                textTransform: "uppercase",
-              }}
-            >
-              {grupaKolejka}
-            </span>
-          </div>
-        ) : null}
+        <div
+          style={{
+            position: "absolute",
+            top: 210,
+            left: "50%",
+            transform: "translateX(-50%)",
+          }}
+        >
+          <HeaderStrip
+            segments={[grupa, kolejka, kategoria_wiekowa, faza_rozgrywek]}
+          />
+        </div>
 
         <div
           style={{
@@ -164,8 +154,13 @@ export function FootballResultStoryPhoto(props: FootballResultStoryPhotoProps) {
             />
           </div>
         ) : null}
+
+        <div style={{ marginTop: 18 }}>
+          <MvpChip mvp={mvp} />
+        </div>
       </div>
 
+      <HashtagLine hashtag={liga.hashtag} offsetBottom={sponsorBarH} />
       <SponsorBar urls={sponsorzy} height={sponsorBarH} />
     </div>
   );

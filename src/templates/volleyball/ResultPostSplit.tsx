@@ -1,5 +1,8 @@
 import { VolleyballMatchPhotoSchema } from "@/types/match";
 import { SponsorBar } from "../_shared/SponsorBar";
+import { HeaderStrip } from "../_shared/HeaderStrip";
+import { MvpChip } from "../_shared/MvpChip";
+import { HashtagLine } from "../_shared/HashtagLine";
 import type { z } from "zod";
 
 export const volleyballResultPostSplitSchema = VolleyballMatchPhotoSchema;
@@ -20,6 +23,9 @@ export function VolleyballResultPostSplit(
     team_away,
     score,
     kolejka,
+    kategoria_wiekowa,
+    faza_rozgrywek,
+    mvp,
     liga,
     sponsorzy,
     photo_base64,
@@ -204,18 +210,12 @@ export function VolleyballResultPostSplit(
                 </span>
               )}
             </div>
-            <span
-              style={{
-                color: "rgba(255,255,255,0.45)",
-                fontFamily: "Oswald, sans-serif",
-                fontSize: 16,
-                fontWeight: 500,
-                textTransform: "uppercase",
-                letterSpacing: 3,
-              }}
-            >
-              {kolejka}
-            </span>
+            <div style={{ flex: 1 }}>
+              <HeaderStrip
+                segments={[kolejka, kategoria_wiekowa, faza_rozgrywek]}
+                size="small"
+              />
+            </div>
           </div>
           <div
             style={{
@@ -383,6 +383,9 @@ export function VolleyballResultPostSplit(
               {team_away.name}
             </span>
           </div>
+          <div style={{ marginTop: 12 }}>
+            <MvpChip mvp={mvp} size="small" />
+          </div>
         </div>
 
         {/* Bottom: set scores list */}
@@ -468,6 +471,7 @@ export function VolleyballResultPostSplit(
         )}
       </div>
 
+      <HashtagLine hashtag={liga.hashtag} offsetBottom={sponsorBarH} />
       <SponsorBar urls={sponsorzy} height={sponsorBarH} />
     </div>
   );

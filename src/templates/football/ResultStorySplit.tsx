@@ -1,5 +1,8 @@
 import { FootballMatchPhotoSchema } from "@/types/match";
 import { SponsorBar } from "../_shared/SponsorBar";
+import { HeaderStrip } from "../_shared/HeaderStrip";
+import { MvpChip } from "../_shared/MvpChip";
+import { HashtagLine } from "../_shared/HashtagLine";
 import type { z } from "zod";
 
 export const footballResultStorySplitSchema = FootballMatchPhotoSchema;
@@ -20,6 +23,9 @@ export function FootballResultStorySplit(
     score,
     kolejka,
     grupa,
+    kategoria_wiekowa,
+    faza_rozgrywek,
+    mvp,
     liga,
     sponsorzy,
     photo_base64,
@@ -32,7 +38,6 @@ export function FootballResultStorySplit(
   const cHome = team_home.primary_color;
   const cAway = team_away.primary_color;
   const cLiga = liga.primary_color;
-  const grupaKolejka = [grupa, kolejka].filter(Boolean).join(" · ");
   const hasScorers =
     score.scorers_home.length > 0 || score.scorers_away.length > 0;
 
@@ -144,18 +149,9 @@ export function FootballResultStorySplit(
             </span>
           )}
         </div>
-        <span
-          style={{
-            color: "rgba(255,255,255,0.6)",
-            fontFamily: "Oswald, sans-serif",
-            fontSize: 22,
-            fontWeight: 600,
-            textTransform: "uppercase",
-            letterSpacing: 3,
-          }}
-        >
-          {grupaKolejka || "—"}
-        </span>
+        <HeaderStrip
+          segments={[grupa, kolejka, kategoria_wiekowa, faza_rozgrywek]}
+        />
       </div>
 
       {/* Bottom panel */}
@@ -266,8 +262,11 @@ export function FootballResultStorySplit(
             </div>
           </div>
         )}
+
+        <MvpChip mvp={mvp} />
       </div>
 
+      <HashtagLine hashtag={liga.hashtag} offsetBottom={sponsorBarH} />
       <SponsorBar urls={sponsorzy} height={sponsorBarH} />
     </div>
   );

@@ -11,5 +11,6 @@ export const LigaInfoSchema = z.object({
   name: z.string().default("Liga"),
   logo_url: z.string().optional().default(""),
   primary_color: z.string().default("#004aad"),
+  hashtag: z.string().optional().default(""),
 });
 export type LigaInfo = z.infer<typeof LigaInfoSchema>;
