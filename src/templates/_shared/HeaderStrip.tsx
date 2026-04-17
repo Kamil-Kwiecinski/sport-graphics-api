@@ -53,7 +53,11 @@ export function HeaderStrip({ segments, size = "default" }: Props) {
         background: "rgba(0, 74, 173, 0.5)",
         padding: `${padY}px ${padX}px`,
         borderRadius: 20,
-        maxWidth: "96%",
+        // Twarde piksele — procenty są niedeterministyczne w flex container
+        // bez explicit width. Wartości dobrane pod typowe templates:
+        // - default: post 1080 + story 1080 → chip max 960px
+        // - small:   split panel 454px → chip max 420px
+        maxWidth: size === "small" ? 420 : 960,
       }}
     >
       <span
