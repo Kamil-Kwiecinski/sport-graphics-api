@@ -64,6 +64,16 @@ import { FootballMvpStoryPhoto, footballMvpStoryPhotoSchema } from "./football/M
 import { FootballMvpPostSplit, footballMvpPostSplitSchema } from "./football/MvpPostSplit";
 import { FootballMvpStorySplit, footballMvpStorySplitSchema } from "./football/MvpStorySplit";
 
+// Lineup templates
+import {
+  VolleyballLineupPost,
+  volleyballLineupPostSchema,
+} from "./volleyball/LineupPost";
+import {
+  VolleyballLineupStory,
+  volleyballLineupStorySchema,
+} from "./volleyball/LineupStory";
+
 export type TemplateDef<P = any> = {
   id: string;
   sport: "volleyball" | "football" | "basketball" | "hockey";
@@ -273,6 +283,24 @@ const entries: TemplateDef[] = [
     sport: "football",
     Component: FootballMvpStorySplit as ComponentType,
     schema: footballMvpStorySplitSchema,
+    defaultWidth: 1080,
+    defaultHeight: 1920,
+  },
+
+  // ── Starting Lineup templates ────────────────────────────────
+  {
+    id: "volleyball/lineup-post",
+    sport: "volleyball",
+    Component: VolleyballLineupPost as ComponentType,
+    schema: volleyballLineupPostSchema,
+    defaultWidth: 1080,
+    defaultHeight: 1080,
+  },
+  {
+    id: "volleyball/lineup-story",
+    sport: "volleyball",
+    Component: VolleyballLineupStory as ComponentType,
+    schema: volleyballLineupStorySchema,
     defaultWidth: 1080,
     defaultHeight: 1920,
   },
