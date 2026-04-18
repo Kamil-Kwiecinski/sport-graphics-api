@@ -55,10 +55,14 @@ import { VolleyballMvpPost, volleyballMvpPostSchema } from "./volleyball/MvpPost
 import { VolleyballMvpStory, volleyballMvpStorySchema } from "./volleyball/MvpStory";
 import { VolleyballMvpPostPhoto, volleyballMvpPostPhotoSchema } from "./volleyball/MvpPostPhoto";
 import { VolleyballMvpStoryPhoto, volleyballMvpStoryPhotoSchema } from "./volleyball/MvpStoryPhoto";
+import { VolleyballMvpPostSplit, volleyballMvpPostSplitSchema } from "./volleyball/MvpPostSplit";
+import { VolleyballMvpStorySplit, volleyballMvpStorySplitSchema } from "./volleyball/MvpStorySplit";
 import { FootballMvpPost, footballMvpPostSchema } from "./football/MvpPost";
 import { FootballMvpStory, footballMvpStorySchema } from "./football/MvpStory";
 import { FootballMvpPostPhoto, footballMvpPostPhotoSchema } from "./football/MvpPostPhoto";
 import { FootballMvpStoryPhoto, footballMvpStoryPhotoSchema } from "./football/MvpStoryPhoto";
+import { FootballMvpPostSplit, footballMvpPostSplitSchema } from "./football/MvpPostSplit";
+import { FootballMvpStorySplit, footballMvpStorySplitSchema } from "./football/MvpStorySplit";
 
 export type TemplateDef<P = any> = {
   id: string;
@@ -236,6 +240,39 @@ const entries: TemplateDef[] = [
     sport: "football",
     Component: FootballMvpStoryPhoto as ComponentType,
     schema: footballMvpStoryPhotoSchema,
+    defaultWidth: 1080,
+    defaultHeight: 1920,
+  },
+  // ── MVP Split Panel ──────────────────────────────────────────
+  {
+    id: "volleyball/mvp-post-photo-split",
+    sport: "volleyball",
+    Component: VolleyballMvpPostSplit as ComponentType,
+    schema: volleyballMvpPostSplitSchema,
+    defaultWidth: 1080,
+    defaultHeight: 1080,
+  },
+  {
+    id: "volleyball/mvp-story-photo-split",
+    sport: "volleyball",
+    Component: VolleyballMvpStorySplit as ComponentType,
+    schema: volleyballMvpStorySplitSchema,
+    defaultWidth: 1080,
+    defaultHeight: 1920,
+  },
+  {
+    id: "football/mvp-post-photo-split",
+    sport: "football",
+    Component: FootballMvpPostSplit as ComponentType,
+    schema: footballMvpPostSplitSchema,
+    defaultWidth: 1080,
+    defaultHeight: 1080,
+  },
+  {
+    id: "football/mvp-story-photo-split",
+    sport: "football",
+    Component: FootballMvpStorySplit as ComponentType,
+    schema: footballMvpStorySplitSchema,
     defaultWidth: 1080,
     defaultHeight: 1920,
   },
