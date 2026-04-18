@@ -2,10 +2,15 @@ import { LineupGraphicSchema } from "@/types/lineup";
 import { LigaLogo } from "../_shared/LigaLogo";
 import { SponsorBar } from "../_shared/SponsorBar";
 import { HeaderStrip } from "../_shared/HeaderStrip";
-import { HashtagLine } from "../_shared/HashtagLine";
 import { LineupTitle } from "../_shared/LineupTitle";
 import { PlayerTile } from "../_shared/PlayerTile";
 import type { z } from "zod";
+
+function normalizeHashtag(raw: string): string {
+  const t = (raw ?? "").trim();
+  if (!t) return "";
+  return t.startsWith("#") ? t : `#${t}`;
+}
 
 export const volleyballLineupStorySchema = LineupGraphicSchema;
 export type VolleyballLineupStoryProps = z.infer<typeof volleyballLineupStorySchema>;
@@ -222,10 +227,23 @@ export function VolleyballLineupStory(props: VolleyballLineupStoryProps) {
                 .join(" · ")}
             </span>
           ) : null}
+          {liga.hashtag ? (
+            <span
+              style={{
+                fontFamily: "Oswald, sans-serif",
+                fontSize: 20,
+                fontWeight: 500,
+                color: "rgba(255,255,255,0.6)",
+                letterSpacing: 2,
+                marginTop: 6,
+              }}
+            >
+              {normalizeHashtag(liga.hashtag)}
+            </span>
+          ) : null}
         </div>
       </div>
 
-      <HashtagLine hashtag={liga.hashtag} offsetBottom={sponsorBarH} />
       <SponsorBar urls={sponsorzy} height={sponsorBarH} />
     </div>
   );

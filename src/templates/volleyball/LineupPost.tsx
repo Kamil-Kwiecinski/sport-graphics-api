@@ -2,10 +2,15 @@ import { LineupGraphicSchema } from "@/types/lineup";
 import { LigaLogo } from "../_shared/LigaLogo";
 import { SponsorBar } from "../_shared/SponsorBar";
 import { HeaderStrip } from "../_shared/HeaderStrip";
-import { HashtagLine } from "../_shared/HashtagLine";
 import { LineupTitle } from "../_shared/LineupTitle";
 import { PlayerTile } from "../_shared/PlayerTile";
 import type { z } from "zod";
+
+function normalizeHashtag(raw: string): string {
+  const t = (raw ?? "").trim();
+  if (!t) return "";
+  return t.startsWith("#") ? t : `#${t}`;
+}
 
 export const volleyballLineupPostSchema = LineupGraphicSchema;
 export type VolleyballLineupPostProps = z.infer<typeof volleyballLineupPostSchema>;
@@ -49,11 +54,12 @@ export function VolleyballLineupPost(props: VolleyballLineupPostProps) {
   const starters = players.filter((p) => !p.is_libero).slice(0, 6);
   const libero = players.find((p) => p.is_libero);
 
-  // Grid 3 kolumny × 2 rzędy na szerokość ~960 (margin 60 z każdej strony)
-  const gridW = 900;
-  const tileGap = 18;
+  // Grid 3 kolumny × 2 rzędy na szerokość ~960 (margin 60 z każdej strony).
+  // Tile size 252 daje wysokość gridu 2×252+14=518 — reszta miejsca
+  // (header + title + libero chip + match context) zmieści się w 1080.
+  const gridW = 780;
+  const tileGap = 14;
   const tileSize = Math.floor((gridW - tileGap * 2) / 3);
-  const liberoSize = Math.round(tileSize * 0.88);
 
   // Opponent string dla kontekstu
   const ownIsHome = match.team_home
@@ -103,9 +109,9 @@ export function VolleyballLineupPost(props: VolleyballLineupPostProps) {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          paddingTop: 32,
-          paddingBottom: 24 + sponsorBarH,
-          gap: 18,
+          paddingTop: 28,
+          paddingBottom: 20 + sponsorBarH,
+          gap: 14,
           zIndex: 2,
         }}
       >
@@ -115,10 +121,10 @@ export function VolleyballLineupPost(props: VolleyballLineupPostProps) {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            gap: 10,
+            gap: 8,
           }}
         >
-          <LigaLogo liga={liga} size={64} />
+          <LigaLogo liga={liga} size={60} />
           <HeaderStrip
             segments={[kolejka, kategoria_wiekowa, faza_rozgrywek]}
           />
@@ -142,37 +148,60 @@ export function VolleyballLineupPost(props: VolleyballLineupPostProps) {
           ))}
         </div>
 
-        {/* Libero osobno — zaraz pod gridem nie wchodzi bo 2xtile + title zajmuje > 700px;
-            więc renderujemy w rzędzie z chipem "LIBERO" obok */}
+        {/* Libero — kompaktowy chip pozioma: [#10] POPIWCZAK · libero.
+            Pełny tile jak w story nie mieści się w 1080px wysokości post-a. */}
         {libero ? (
           <div
             style={{
               display: "flex",
               alignItems: "center",
-              gap: 16,
-              marginTop: 4,
+              gap: 12,
+              background: "rgba(255,255,255,0.06)",
+              border: `2px solid ${cTeam}`,
+              borderRadius: 12,
+              padding: "10px 20px",
+              fontFamily: "Oswald, sans-serif",
             }}
           >
             <span
               style={{
-                fontFamily: "Oswald, sans-serif",
-                fontSize: 22,
-                fontWeight: 700,
-                color: "rgba(255,255,255,0.8)",
+                background: "#ffd700",
+                color: "#0d1117",
+                fontSize: 14,
+                fontWeight: 800,
+                padding: "3px 10px",
+                borderRadius: 6,
+                letterSpacing: 2,
                 textTransform: "uppercase",
-                letterSpacing: 4,
               }}
             >
               LIBERO
             </span>
-            <div
+            {libero.number ? (
+              <span
+                style={{
+                  background: cTeam,
+                  color: "#0d1117",
+                  fontSize: 20,
+                  fontWeight: 800,
+                  padding: "3px 12px",
+                  borderRadius: 8,
+                }}
+              >
+                #{libero.number}
+              </span>
+            ) : null}
+            <span
               style={{
-                width: 2,
-                height: 40,
-                background: "rgba(255,255,255,0.2)",
+                fontSize: 26,
+                fontWeight: 800,
+                color: "#fff",
+                textTransform: "uppercase",
+                letterSpacing: 1,
               }}
-            />
-            <PlayerTile team={team} player={libero} width={liberoSize} />
+            >
+              {libero.name.toUpperCase()}
+            </span>
           </div>
         ) : null}
 
@@ -249,10 +278,23 @@ export function VolleyballLineupPost(props: VolleyballLineupPostProps) {
                 .join(" · ")}
             </span>
           ) : null}
+          {liga.hashtag ? (
+            <span
+              style={{
+                fontFamily: "Oswald, sans-serif",
+                fontSize: 16,
+                fontWeight: 500,
+                color: "rgba(255,255,255,0.55)",
+                letterSpacing: 1.5,
+                marginTop: 4,
+              }}
+            >
+              {normalizeHashtag(liga.hashtag)}
+            </span>
+          ) : null}
         </div>
       </div>
 
-      <HashtagLine hashtag={liga.hashtag} offsetBottom={sponsorBarH} />
       <SponsorBar urls={sponsorzy} height={sponsorBarH} />
     </div>
   );

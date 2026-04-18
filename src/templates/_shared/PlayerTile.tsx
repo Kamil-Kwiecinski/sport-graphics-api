@@ -16,11 +16,11 @@ import type { LineupPlayer } from "@/types/lineup";
  */
 
 function computeNameFontSize(textLength: number, base: number): number {
-  if (textLength <= 10) return base;
-  if (textLength <= 14) return Math.round(base * 0.86);
-  if (textLength <= 18) return Math.round(base * 0.72);
-  if (textLength <= 24) return Math.round(base * 0.6);
-  return Math.round(base * 0.5);
+  if (textLength <= 7) return base;
+  if (textLength <= 10) return Math.round(base * 0.82);
+  if (textLength <= 13) return Math.round(base * 0.68);
+  if (textLength <= 17) return Math.round(base * 0.56);
+  return Math.round(base * 0.46);
 }
 
 // Wyciąga nazwisko (ostatnie słowo) do eksponowania jako główny tekst.
@@ -77,44 +77,26 @@ export function PlayerTile({ team, player, width }: Props) {
           }}
         />
       ) : (
-        <>
-          {/* Duży numer w tle fallbacku */}
-          {player.number ? (
-            <div
-              style={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -55%)",
-                fontFamily: "Anton, Oswald, sans-serif",
-                fontSize: bgNumberSize,
-                fontWeight: 900,
-                color: "rgba(255,255,255,0.12)",
-                lineHeight: 1,
-                letterSpacing: -4,
-              }}
-            >
-              {player.number}
-            </div>
-          ) : null}
-          {/* Inicjał nazwiska w tle */}
+        // Fallback: duży półprzezroczysty numer w tle (nazwisko w dolnym pasie
+        // i chip numeru w rogu dodawane niżej jako wspólna warstwa).
+        player.number ? (
           <div
             style={{
               position: "absolute",
-              bottom: Math.round(size * 0.3),
-              left: 0,
-              right: 0,
-              textAlign: "center",
-              fontFamily: "Oswald, sans-serif",
-              fontSize: Math.round(size * 0.28),
-              fontWeight: 800,
-              color: "rgba(255,255,255,0.92)",
-              letterSpacing: 2,
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -55%)",
+              fontFamily: "Anton, Oswald, sans-serif",
+              fontSize: bgNumberSize,
+              fontWeight: 900,
+              color: "rgba(255,255,255,0.18)",
+              lineHeight: 1,
+              letterSpacing: -4,
             }}
           >
-            {displayName.charAt(0)}
+            {player.number}
           </div>
-        </>
+        ) : null
       )}
 
       {/* Gradient od dołu dla czytelności napisów */}
@@ -208,14 +190,15 @@ export function PlayerTile({ team, player, width }: Props) {
         style={{
           position: "absolute",
           bottom: Math.round(size * 0.06),
-          left: Math.round(size * 0.05),
-          right: Math.round(size * 0.05),
+          left: Math.round(size * 0.03),
+          right: Math.round(size * 0.03),
           fontFamily: "Oswald, sans-serif",
           fontSize: nameFontSize,
           fontWeight: 800,
           color: "#fff",
           textTransform: "uppercase",
-          letterSpacing: 2,
+          // Dłuższe nazwiska = mniejszy letterSpacing (mieści się)
+          letterSpacing: displayName.length > 8 ? 0 : 1,
           lineHeight: 1,
           textAlign: "center",
           whiteSpace: "nowrap",
